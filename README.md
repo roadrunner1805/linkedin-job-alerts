@@ -21,7 +21,7 @@ A free, local tool to monitor LinkedIn job postings and receive email alerts.
 1. Navigate to `frontend/`.
 2. Install dependencies: `npm install`.
 3. Run the development server: `npm run dev`.
-4. Open `http://localhost:5173` in your browser.
+4. Open `http://localhost:5174` in your browser.
 
 ## Features
 - **Local Scraping:** Uses Playwright to scrape public LinkedIn data without an account or paid API.
