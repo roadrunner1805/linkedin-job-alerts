@@ -22,7 +22,6 @@ async def run_scrapers():
             found_jobs = await scraper.scrape_jobs(alert.keyword, alert.location)
             
             for job_data in found_jobs:
-                # Check if job already exists
                 existing_job = db.query(Job).filter(Job.linkedin_id == job_data["linkedin_id"]).first()
                 if not existing_job:
                     new_job = Job(
@@ -34,14 +33,15 @@ async def run_scrapers():
                         alert_id=alert.id
                     )
                     db.add(new_job)
-                    new_jobs_to_alert.append(new_job)
-        
-        db.commit()
+                    try:
+                        db.commit()
+                        new_jobs_to_alert.append(new_job)
+                    except Exception:
+                        db.rollback()  # duplicate hit from race condition, skip it
         
         if new_jobs_to_alert:
             logger.info(f"Found {len(new_jobs_to_alert)} new jobs. Sending alert.")
             email_service.send_job_alerts(new_jobs_to_alert)
-            # Mark as emailed
             for job in new_jobs_to_alert:
                 job.emailed = True
             db.commit()
