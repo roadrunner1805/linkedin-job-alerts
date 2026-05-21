@@ -2,7 +2,6 @@ from fastapi import FastAPI, Depends, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
-
 import models, schemas, database, scheduler
 from database import engine, get_db
 from scheduler import run_scrapers
@@ -15,7 +14,7 @@ app = FastAPI(title="LinkedIn Job Alerts API")
 # CORS - Restrict to local frontend for security
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5174"],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
